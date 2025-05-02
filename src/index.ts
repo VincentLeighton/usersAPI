@@ -32,9 +32,23 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Middleware to validate incoming JSON
+app.use((err: any, req: Request, res: Response, next: Function) => {
+    if (err instanceof SyntaxError && "body" in err) {
+        res.status(400).send({ error: "Invalid JSON format." });
+        return 
+    }
+    next();
+});
+
 const loadMonstersFromFile = (): Monster[] => {
   const data = fs.readFileSync("monsters.json", "utf-8");
-  return JSON.parse(data);
+try {
+    return JSON.parse(data);
+} catch (error) {
+    console.error("Failed to parse monsters.json:", error);
+    return [];
+}
 };
 
 const monsters = loadMonstersFromFile();
