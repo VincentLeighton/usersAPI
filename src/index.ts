@@ -1,50 +1,9 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
+import fs from "fs";
 
 const app = express();
 const port = 3006;
-
-const monsters: Monster[] = [
-  {
-    id: 1,
-    name: "Blazefang",
-    attributes: {
-      type: "Fire",
-      hp: 100,
-      traits: {
-        canCatch: true,
-        canEvolve: false,
-        isBoss: false,
-      },
-    },
-  },
-  {
-    id: 2,
-    name: "Aqualash",
-    attributes: {
-      type: "Water",
-      hp: 150,
-      traits: {
-        canCatch: true,
-        canEvolve: true,
-        isBoss: true,
-      },
-    },
-  },
-  {
-    id: 3,
-    name: "Terraclaw",
-    attributes: {
-      type: "Earth",
-      hp: 120,
-      traits: {
-        canCatch: false,
-        canEvolve: true,
-        isBoss: false,
-      },
-    },
-  },
-];
 
 interface Monster {
   id: number;
@@ -72,6 +31,13 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+const loadMonstersFromFile = (): Monster[] => {
+  const data = fs.readFileSync("monsters.json", "utf-8");
+  return JSON.parse(data);
+};
+
+const monsters = loadMonstersFromFile();
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Monsters API is running!");
@@ -132,15 +98,10 @@ app.patch("/monster/:id/attributes", (req: Request, res: Response) => {
     }
   }
   // Update the monster's attributes
-  const updatedMonster = {
-    ...monster,
-    attributes: { ...monster.attributes, ...updatedAttributes },
-  };
-  monsters.forEach((m, index) => {
-    if (m.id === monsterId) {
-      monsters[index] = updatedMonster;
-    }
-  });
+  Object.assign(monster.attributes, updatedAttributes);
+
+  // Save the updated monsters to the file
+  fs.writeFileSync('monsters.json', JSON.stringify(monsters, null, 2));
 
   res.send(`Attributes for monster ${monsterId} updated successfully!`);
 });
@@ -158,6 +119,17 @@ app.get("/monster/:id", (req: Request, res: Response) => {
   } else {
     res.status(404).json({ message: "Monster not found" });
   }
+});
+
+app.get('/export', (req: Request, res: Response) => {
+    try {
+        const data = fs.readFileSync('monsters.json', 'utf-8');
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Disposition', 'attachment; filename="monsters.json"');
+        res.send(data);
+    } catch (error) {
+        res.status(500).send('Failed to read the monsters file.');
+    }
 });
 
 app.listen(port, () => {

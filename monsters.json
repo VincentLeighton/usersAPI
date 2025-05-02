@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "Blazefang",
+    "attributes": {
+      "type": "Fire",
+      "hp": 100,
+      "traits": {
+        "canCatch": true,
+        "canEvolve": false,
+        "isBoss": true
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Aqualash",
+    "attributes": {
+      "type": "Air",
+      "hp": 80,
+      "traits": {
+        "canCatch": true,
+        "canEvolve": true,
+        "isBoss": false
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "Terraclaw",
+    "attributes": {
+      "type": "Space",
+      "hp": 6.96969696969697e+33,
+      "traits": {
+        "canCatch": false,
+        "canEvolve": false,
+        "isBoss": false
+      }
+    }
+  }
+]
