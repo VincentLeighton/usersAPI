@@ -4,11 +4,11 @@
     "name": "Blazefang",
     "attributes": {
       "type": "Fire",
-      "hp": 100,
+      "hp": 1000000,
       "traits": {
         "canCatch": true,
         "canEvolve": false,
-        "isBoss": true
+        "isBoss": false
       }
     }
   },
@@ -29,10 +29,10 @@
     "id": 3,
     "name": "Terraclaw",
     "attributes": {
-      "type": "Space",
-      "hp": 6.96969696969697e+33,
+      "type": "Dick",
+      "hp": 1000000,
       "traits": {
-        "canCatch": false,
+        "canCatch": true,
         "canEvolve": false,
         "isBoss": false
       }

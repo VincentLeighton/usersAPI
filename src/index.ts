@@ -73,6 +73,10 @@ app.patch("/monster/:id/attributes", (req: Request, res: Response) => {
     res.status(400).send('Invalid value for attribute "hp".');
     return;
   }
+  if (updatedAttributes.hp && updatedAttributes.hp > 1000000) {
+    res.status(400).send('Health points (hp) cannot exceed 1,000,000.');
+    return;
+  }
   if (updatedAttributes.traits) {
     const traits = updatedAttributes.traits;
     if (
