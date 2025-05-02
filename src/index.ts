@@ -66,17 +66,24 @@ app.patch("/monster/:id/attributes", (req: Request, res: Response) => {
     res.status(400).send('Invalid type for attribute "type".');
     return;
   }
-  if (
-    updatedAttributes.hp &&
-    (typeof updatedAttributes.hp !== "number" || updatedAttributes.hp < 0)
-  ) {
-    res.status(400).send('Invalid value for attribute "hp".');
+try {
+    JSON.stringify(updatedAttributes); // Check if the JSON is valid
+} catch (error) {
+    res.status(400).send("Invalid JSON format.");
     return;
-  }
-  if (updatedAttributes.hp && updatedAttributes.hp > 1000000) {
+}
+
+if (
+    updatedAttributes.hp &&
+    (typeof updatedAttributes.hp !== "number" || updatedAttributes.hp < 0 || !Number.isInteger(updatedAttributes.hp))
+) {
+    res.status(400).send('Invalid value for attribute "hp". It must be a whole number.');
+    return;
+}
+if (updatedAttributes.hp && updatedAttributes.hp > 1000000) {
     res.status(400).send('Health points (hp) cannot exceed 1,000,000.');
     return;
-  }
+}
   if (updatedAttributes.traits) {
     const traits = updatedAttributes.traits;
     if (
