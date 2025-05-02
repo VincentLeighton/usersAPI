@@ -30,7 +30,7 @@
     "name": "Terraclaw",
     "attributes": {
       "type": "11",
-      "hp": 1e-19,
+      "hp": 11,
       "traits": {
         "canCatch": true,
         "canEvolve": false,
